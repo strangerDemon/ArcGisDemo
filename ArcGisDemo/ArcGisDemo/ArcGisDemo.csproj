@@ -66,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\map.css" />
+    <Content Include="img\mapType.png" />
+    <Content Include="img\drawMap.png" />
     <Content Include="index.aspx" />
     <Content Include="js\data.js" />
     <Content Include="js\InitMap.js" />

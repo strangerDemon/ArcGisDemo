@@ -129,7 +129,7 @@ ssmap.initTDTlLayers = function () {
         },
 
         getTileUrl: function (level, row, col) {
-            return "http://t" + row % 8 + ".tianditu.cn/img_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=c&TILEMATRIX=" + level + "&TILEROW=" + row + "&TILECOL=" + col + "&FORMAT=tiles";
+            return "....";
         }
     });
 
@@ -148,7 +148,7 @@ ssmap.initTDTlLayers = function () {
         },
 
         getTileUrl: function (level, row, col) {
-            return "http://t" + row % 8 + ".tianditu.cn/cia_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=c&TILEMATRIX=" + level + "&TILEROW=" + row + "&TILECOL=" + col + "&FORMAT=tiles";
+            return ".....";
         }
     });
 }

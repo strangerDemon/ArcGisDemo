@@ -3,18 +3,10 @@
 (function ($) {
     //数据源
     var MapServer = {
-        //厦门矢量地图
-        XMMAP: "http://mapapi.xmtfj.gov.cn/RemoteRest/services/CGCS_XMMAP/MapServer",
-        //厦门矢量地图注记
-        XMMAP_CVA: "http://mapapi.xmtfj.gov.cn/RemoteRest/services/CGCS_XMMAP_CVA/MapServer",
-        //厦门影像地图
-        DOMMAP: "http://mapapi.xmtfj.gov.cn/RemoteRest/services/CGCS_DOMMAP/MapServer",
-        //厦门影像地图注记
-        DOMMAP_CIA: "http://mapapi.xmtfj.gov.cn/RemoteRest/services/CGCS_DOMMAP_CIA/MapServer",
-        //厦门晕渲染地图
-        DEMMAP: "http://mapapi.xmtfj.gov.cn/RemoteRest/services/CGCS_DEMMAP/MapServer",
-        //厦门晕渲染地图注记
-        DEMMAP_CVA: "http://mapapi.xmtfj.gov.cn/RemoteRest/services/CGCS_DEMMAP_CVA/MapServer"
+        //矢量地图
+        XMMAP: "........",
+        //矢量地图注记
+        XMMAP_CVA: "........",
     };
 
     var ArcGis = (function () {

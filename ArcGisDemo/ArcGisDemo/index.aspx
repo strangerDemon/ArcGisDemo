@@ -19,7 +19,7 @@
     <script src="js/data.js"></script>
     <script src="js/map.js"></script>
     <script src="js/InitMap.js"></script>
-     <script src="js/myAction.js"></script>
+    <script src="js/myAction.js"></script>
     <%-- css --%>
     <%--<link rel="stylesheet" type="text/css" href="css/map.css" />--%>
     <title>arcgis demo</title>
@@ -40,5 +40,15 @@
 </head>
 <body>
     <div id="map" ></div>
+    <div class="ibox-content toolbarContainer hideElem" style="width: 412px; padding: 5px;">
+        <div class="toolbarItem" id="toolbar_mapswitch">
+            <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/mapType.png') no-repeat scroll 0 0 / 16px"></span>
+            <span class="name">地图类型</span>
+        </div>
+        <div class="toolbarItem" id="toolbar_duibi">
+            <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/drawMap.png') no-repeat scroll 0 0 / 16px"></span>
+            <span class="name">绘图</span>
+        </div>
+    </div>
 </body>
 </html>
