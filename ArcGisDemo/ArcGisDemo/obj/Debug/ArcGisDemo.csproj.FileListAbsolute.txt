@@ -1,0 +1,6 @@
+E:\GitHub\ArcGisDemo\ArcGisDemo\ArcGisDemo\bin\ArcGisDemo.dll.config
+E:\GitHub\ArcGisDemo\ArcGisDemo\ArcGisDemo\bin\ArcGisDemo.dll
+E:\GitHub\ArcGisDemo\ArcGisDemo\ArcGisDemo\bin\ArcGisDemo.pdb
+E:\GitHub\ArcGisDemo\ArcGisDemo\ArcGisDemo\obj\Debug\ArcGisDemo.csprojResolveAssemblyReference.cache
+E:\GitHub\ArcGisDemo\ArcGisDemo\ArcGisDemo\obj\Debug\ArcGisDemo.dll
+E:\GitHub\ArcGisDemo\ArcGisDemo\ArcGisDemo\obj\Debug\ArcGisDemo.pdb
