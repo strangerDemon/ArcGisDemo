@@ -6,7 +6,7 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <%-- esri --%>
-   
+
     <link rel="stylesheet" type="text/css" href="lib/esri/3.14/esri.css" />
     <link rel="stylesheet" type="text/css" href="lib/esri/3.14/tundra.css" />
     <script src="lib/esri/3.14/init.js"></script>
@@ -20,32 +20,23 @@
     <script src="js/map.js"></script>
     <script src="js/InitMap.js"></script>
     <script src="js/myAction.js"></script>
+    <script src="js/onclick.js"></script>
     <%-- css --%>
-    <%--<link rel="stylesheet" type="text/css" href="css/map.css" />--%>
+    <link rel="stylesheet" type="text/css" href="css/map.css" />
+     <link rel="stylesheet" type="text/css" href="css/label.css" />
     <title>arcgis demo</title>
-   <style>
-       html, body{
-            height: 100%;
-           width: 100%;
-       }
-       #map {
-           height: 100%;
-           width: 100%;
-           margin: 0;
-           padding: 0;
-           font-size: 10px;
-           -webkit-text-size-adjust: 100%;
-       }
-   </style>
+    <style>
+       
+    </style>
 </head>
 <body>
-    <div id="map" ></div>
+    <div id="map"></div>
     <div class="ibox-content toolbarContainer hideElem" style="width: 412px; padding: 5px;">
-        <div class="toolbarItem" id="toolbar_mapswitch">
+        <div class="toolbarItem" id="toolbar_mapType">
             <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/mapType.png') no-repeat scroll 0 0 / 16px"></span>
             <span class="name">地图类型</span>
         </div>
-        <div class="toolbarItem" id="toolbar_duibi">
+        <div class="toolbarItem" id="toolbar_mapDraw">
             <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/drawMap.png') no-repeat scroll 0 0 / 16px"></span>
             <span class="name">绘图</span>
         </div>

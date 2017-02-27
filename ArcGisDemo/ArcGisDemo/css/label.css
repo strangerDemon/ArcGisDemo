@@ -1,0 +1,64 @@
+﻿ .ibox-content {
+            clear: both;
+        }
+
+        .ibox-content {
+            background-color: #fff;
+            color: inherit;
+            border-color: #e7eaec;
+            -webkit-border-image: none;
+            -o-border-image: none;
+            border-image: none;
+            border-width: 1px 0;
+        }
+
+        .toolbarContainer {
+            position: absolute;
+            right: 80px;
+            top: 20px;
+            width: 360px;
+            z-index: 10;
+            min-height: 45px;
+            border-style: none;
+            box-shadow: 1px 1px 3px rgba(51,133,255,0.35);
+            padding: 0px;
+        }
+
+        .toolbarItem {
+            border-right: 1px solid #e5e5e5;
+            cursor: pointer;
+            padding: 0 6px;
+            display: inline-block;
+            vertical-align: middle;
+            color: #565656;
+            font-size: 12px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            margin-top: 8px;
+        }
+
+            .toolbarItem .icon {
+                height: 20px;
+                width: 22px;
+                display: inline-block;
+                vertical-align: middle;
+                cursor: pointer;
+                color: #565656;
+                font-size: 12px;
+                line-height: 1.5;
+                word-wrap: break-word;
+            }
+
+            .toolbarItem .name {
+                display: inline-block;
+                vertical-align: middle;
+                cursor: pointer;
+                color: #565656;
+                font-size: 12px;
+                line-height: 2;
+                word-wrap: break-word;
+            }
+
+                .toolbarItem .name:hover {
+                    color: #3385FF;
+                }

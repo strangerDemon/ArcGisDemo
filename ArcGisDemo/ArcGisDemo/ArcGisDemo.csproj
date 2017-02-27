@@ -65,7 +65,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\label.css" />
     <Content Include="css\map.css" />
+    <Content Include="eg.png" />
     <Content Include="img\mapType.png" />
     <Content Include="img\drawMap.png" />
     <Content Include="index.aspx" />
@@ -73,6 +75,7 @@
     <Content Include="js\InitMap.js" />
     <Content Include="js\map.js" />
     <Content Include="js\myAction.js" />
+    <Content Include="js\onclick.js" />
     <Content Include="lib\esri\3.14\esri.css" />
     <Content Include="lib\esri\3.14\init-min.js" />
     <Content Include="lib\esri\3.14\tundra.css" />
