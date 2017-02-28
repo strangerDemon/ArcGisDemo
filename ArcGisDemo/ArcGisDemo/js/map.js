@@ -167,7 +167,7 @@ ssmap.initTDTlLayers = function () {
             this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
             this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
             -90.0, 180.0, 90.0, this.spatialReference));
-            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+            this.tileInfo = new esri.layers.TileInfo(data.tileinfo);
 
             this.loaded = true;
             this.onLoad(this);
@@ -186,7 +186,7 @@ ssmap.initTDTlLayers = function () {
             this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
             this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
             -90.0, 180.0, 90.0, this.spatialReference));
-            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+            this.tileInfo = new esri.layers.TileInfo(data.tileinfo);
 
             this.loaded = true;
             this.onLoad(this);
@@ -206,7 +206,7 @@ ssmap.initTDTlLayers = function () {
             this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
             this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
             -90.0, 180.0, 90.0, this.spatialReference));
-            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+            this.tileInfo = new esri.layers.TileInfo(data.tileinfo);
 
             this.loaded = true;
             this.onLoad(this);
@@ -225,7 +225,7 @@ ssmap.initTDTlLayers = function () {
             this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
             this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
             -90.0, 180.0, 90.0, this.spatialReference));
-            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+            this.tileInfo = new esri.layers.TileInfo(data.tileinfo);
 
             this.loaded = true;
             this.onLoad(this);
@@ -244,7 +244,7 @@ ssmap.initTDTlLayers = function () {
             this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
             this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
             -90.0, 180.0, 90.0, this.spatialReference));
-            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+            this.tileInfo = new esri.layers.TileInfo(data.tileinfo);
 
             this.loaded = true;
             this.onLoad(this);
@@ -263,7 +263,7 @@ ssmap.initTDTlLayers = function () {
             this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
             this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
             -90.0, 180.0, 90.0, this.spatialReference));
-            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+            this.tileInfo = new esri.layers.TileInfo(data.tileinfo);
 
             this.loaded = true;
             this.onLoad(this);
