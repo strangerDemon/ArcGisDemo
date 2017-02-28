@@ -3,10 +3,18 @@
 (function ($) {
     //数据源
     var MapServer = {
-        //矢量地图
-        XMMAP: "........",
-        //矢量地图注记
-        XMMAP_CVA: "........",
+        //厦门矢量地图
+        XMMAP: "...",
+        //厦门矢量地图注记
+        XMMAP_CVA: "...",
+        //厦门影像地图
+        DOMMAP: "...",
+        //厦门影像地图注记
+        DOMMAP_CIA: "...",
+        //厦门晕渲染地图
+        DEMMAP: "...",
+        //厦门晕渲染地图注记
+        DEMMAP_CVA: "..."
     };
 
     var ArcGis = (function () {

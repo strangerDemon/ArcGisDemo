@@ -160,6 +160,45 @@ ssmap.showTdtLayer = function (mapType) {
 */
 ssmap.initTDTlLayers = function () {
     /*
+       国家矢量地图服务
+   */
+    dojo.declare("TdtVecWebTileLayer", esri.layers.TiledMapServiceLayer, {
+        constructor: function () {
+            this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
+            this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
+            -90.0, 180.0, 90.0, this.spatialReference));
+            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+
+            this.loaded = true;
+            this.onLoad(this);
+        },
+
+        getTileUrl: function (level, row, col) {
+            return "...";
+        }
+    });
+
+    /*
+        国家矢量注记地图服务
+    */
+    dojo.declare("TdtCvaWebTileLayer", esri.layers.TiledMapServiceLayer, {
+        constructor: function () {
+            this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
+            this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
+            -90.0, 180.0, 90.0, this.spatialReference));
+            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+
+            this.loaded = true;
+            this.onLoad(this);
+        },
+
+        getTileUrl: function (level, row, col) {
+            return "...";
+
+        }
+    });
+
+    /*
         国家影像地图服务
     */
     dojo.declare("TdtImgWebTileLayer", esri.layers.TiledMapServiceLayer, {
@@ -167,14 +206,14 @@ ssmap.initTDTlLayers = function () {
             this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
             this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
             -90.0, 180.0, 90.0, this.spatialReference));
-            this.tileInfo = new esri.layers.TileInfo(data.tileinfo);
+            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
 
             this.loaded = true;
             this.onLoad(this);
         },
 
         getTileUrl: function (level, row, col) {
-            return "....";
+            return "...";
         }
     });
 
@@ -186,14 +225,52 @@ ssmap.initTDTlLayers = function () {
             this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
             this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
             -90.0, 180.0, 90.0, this.spatialReference));
-            this.tileInfo = new esri.layers.TileInfo(data.tileinfo);
+            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
 
             this.loaded = true;
             this.onLoad(this);
         },
 
         getTileUrl: function (level, row, col) {
-            return ".....";
+            return "...";
+        }
+    });
+
+    /*
+        国家晕渲地图服务
+    */
+    dojo.declare("TdtTerWebTileLayer", esri.layers.TiledMapServiceLayer, {
+        constructor: function () {
+            this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
+            this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
+            -90.0, 180.0, 90.0, this.spatialReference));
+            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+
+            this.loaded = true;
+            this.onLoad(this);
+        },
+
+        getTileUrl: function (level, row, col) {
+            return "...";
+        }
+    });
+
+    /*
+        国家晕渲注记地图服务
+    */
+    dojo.declare("TdtCtaWebTileLayer", esri.layers.TiledMapServiceLayer, {
+        constructor: function () {
+            this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
+            this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-180.0,
+            -90.0, 180.0, 90.0, this.spatialReference));
+            this.tileInfo = new esri.layers.TileInfo(ssconfig.tileinfo);
+
+            this.loaded = true;
+            this.onLoad(this);
+        },
+
+        getTileUrl: function (level, row, col) {
+            return "...";
         }
     });
 }
