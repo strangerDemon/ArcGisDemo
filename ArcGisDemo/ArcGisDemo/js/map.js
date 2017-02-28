@@ -87,7 +87,16 @@ ssmap.init = function () {
     将国家级天地图底图服务添加到地图控件中，默认不显示
 */
 ssmap.addTDTLayerToMap = function () {
+    //矢量
+    ssmap.tdt_vec = new TdtVecWebTileLayer();  //矢量
+    ssmap.tdt_vec.id = "vec_tdt";
+    ssmap.tdt_vec.visible = false;
 
+    ssmap.tdt_cva = new TdtCvaWebTileLayer();
+    ssmap.tdt_cva.id = "vec_tdt_cva";
+    ssmap.tdt_cva.visible = false;
+
+    //影像
     ssmap.tdt_img = new TdtImgWebTileLayer();
     ssmap.tdt_img.id = "img_tdt";
     ssmap.tdt_img.visible = false;
@@ -96,8 +105,21 @@ ssmap.addTDTLayerToMap = function () {
     ssmap.tdt_cia.id = "img_tdt_cia";
     ssmap.tdt_cia.visible = false;
 
+    //晕眩
+    ssmap.tdt_ter = new TdtTerWebTileLayer();  //晕渲
+    ssmap.tdt_ter.id = "ter_tdt";
+    ssmap.tdt_ter.visible = false;
+
+    ssmap.tdt_cta = new TdtCtaWebTileLayer();
+    ssmap.tdt_cta.id = "ter_tdt_cta";
+    ssmap.tdt_cta.visible = false;
+
     ssmap.map.addLayer(ssmap.tdt_img);
     ssmap.map.addLayer(ssmap.tdt_cia);
+    ssmap.map.addLayer(ssmap.tdt_vec);
+    ssmap.map.addLayer(ssmap.tdt_cva);
+    ssmap.map.addLayer(ssmap.tdt_ter);
+    ssmap.map.addLayer(ssmap.tdt_cta);
 
 }
 
@@ -105,9 +127,32 @@ ssmap.addTDTLayerToMap = function () {
     1. 根据地图范围显示国家节点地图服务
     2. 在地图类型切换和地图范围发生变化时执行此操作
 */
-ssmap.showTdtLayer = function () {
-    ssmap.tdt_img.show();
-    ssmap.tdt_cia.show();
+ssmap.showTdtLayer = function (mapType) {
+    ssmap.tdt_vec.hide(); 
+    ssmap.tdt_cva.hide();
+    ssmap.tdt_ter.hide();
+    ssmap.tdt_cta.hide();
+    ssmap.tdt_img.hide();
+    ssmap.tdt_cia.hide();
+    switch (mapType) {
+        case 0:
+            ssmap.tdt_img.show();
+            ssmap.tdt_cia.show();
+            break;
+        case 1:
+            ssmap.tdt_ter.show();
+            ssmap.tdt_cta.show();
+            break;
+        case 2:
+            ssmap.tdt_vec.show();
+            ssmap.tdt_cva.show();
+            break;
+        default:
+            ssmap.tdt_vec.show();
+            ssmap.tdt_cva.show();
+            break;
+    }
+    
 }
 
 /*

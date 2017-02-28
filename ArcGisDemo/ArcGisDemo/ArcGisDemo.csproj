@@ -68,6 +68,7 @@
     <Content Include="css\label.css" />
     <Content Include="css\map.css" />
     <Content Include="eg.png" />
+    <Content Include="eg2.png" />
     <Content Include="img\mapType.png" />
     <Content Include="img\staticMapDraw.png" />
     <Content Include="img\dynamicMapDraw.png" />
