@@ -36,8 +36,12 @@
             <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/mapType.png') no-repeat scroll 0 0 / 16px"></span>
             <span class="name">地图类型</span>
         </div>
-        <div class="toolbarItem" id="toolbar_mapDraw">
-            <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/drawMap.png') no-repeat scroll 0 0 / 16px"></span>
+        <div class="toolbarItem" id="toolbar_staticMapDraw">
+            <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/staticMapDraw.png') no-repeat scroll 0 0 / 16px"></span>
+            <span class="name">静态绘图</span>
+        </div>
+        <div class="toolbarItem" id="toolbar_dynamicMapDraw">
+            <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/dynamicMapDraw.png') no-repeat scroll 0 0 / 16px"></span>
             <span class="name">绘图</span>
         </div>
     </div>

@@ -203,12 +203,4 @@
         window.ArcGis = ArcGis;
         return ArcGis;
     })();
-    //直接绘制几个点成一个面
-    var now = data.initPoint;
-    //var gra = new Graphic();
-    require(["esri/graphic", ], function(Graphic){
-        var area = new Graphic(data.myPolygon);
-        area.setGeometry(data.myPolygon.geometry);
-    })
-    
 })(jQuery)

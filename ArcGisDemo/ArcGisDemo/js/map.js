@@ -218,7 +218,7 @@ $(document).ready(function () {
 
             //地图底图配置数据加载完毕，开始执行地图初始化操作
             ssmap.init();
-            //
-            myAction.drawArea();
+            //action 的初始化
+            myAction.init();
         });
 });
