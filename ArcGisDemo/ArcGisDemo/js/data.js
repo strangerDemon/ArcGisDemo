@@ -51,3 +51,4 @@ data.tileinfo = {
         { "level": 20, "resolution": 1.341104507446289E-6, "scale": 563.61693011999137 }
     ]
 };
+data.myPosition = { "lat": 24.500000, "lng": 118.115000 };

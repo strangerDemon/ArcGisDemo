@@ -5,7 +5,7 @@ myAction = {
     //对象内的全局变量
     fillSymbol: null,//样式，填充样式
 
-    pointSymbol:null,//点样式
+    pointSymbol: null,//点样式
 
     spatialReference: null,//标识，固定
 
@@ -17,7 +17,7 @@ myAction = {
         this.pointSymbol = new esri.symbol.PictureMarkerSymbol('img/myPosition.png', 16, 16);
     },
     //居中位置
-    Center:function(position){
+    Center: function (position) {
         var level = ssmap.map.getLevel();
         level = level < 15 ? 15 : level;
         ssmap.map.centerAndZoom(position, level);//居中点和级别
@@ -103,7 +103,7 @@ myAction = {
             return;
         }
     },
-    dynamicDrawEnd:function(){
+    dynamicDrawEnd: function () {
         this.dynamicPloygon = null;
         this.dynamicAGraphic.setGeometry(this.dynamicPloygon);
         dojo.disconnect(this.dynamicMapClick);//取消绑定
@@ -136,12 +136,12 @@ myAction = {
     },
     //回退点
     dynamicAreaReturn: function () {
-        if (this.dynamicPloygon.rings[0]==undefined||this.dynamicPloygon.rings[0].length < 1) {//已无点时
+        if (this.dynamicPloygon.rings[0] == undefined || this.dynamicPloygon.rings[0].length < 1) {//已无点时
             alert("已无回退点！");
-        } else if (this.dynamicPloygon.rings[0].length <=2) {//最后剩起始终止2个点时
+        } else if (this.dynamicPloygon.rings[0].length <= 2) {//最后剩起始终止2个点时
             this.dynamicPloygon.removeRing(0);
             this.dynamicAGraphic.setGeometry(this.dynamicPloygon);
-        } else{//回退
+        } else {//回退
             this.dynamicPloygon.removePoint(0, this.dynamicPloygon.rings[0].length - 2);
             this.dynamicAGraphic.setGeometry(this.dynamicPloygon);
         }
@@ -152,7 +152,7 @@ myAction = {
     myIp: null,//我的ip
     myPoint: null,//我的未知
     myPositionLayer: null,//我的未知
-    myPositionPoint:null,//坐标点
+    myPositionPoint: null,//坐标点
     mypositionAGraphic: null,
     oPointOffset: { lng: 0.00000, lat: 0.00015 },//偏移量，别问我为什么是这个，是有人试出来的
     //ip获取地址 http://ip.chinaz.com/getip.aspx
@@ -174,62 +174,100 @@ myAction = {
             }
         });
     },
-    //坐标系获取 'http://api.map.baidu.com/highacciploc/v1?ak=mp7UQ7pMBx9SciF4Di0kFfnE&qterm=pc&callback_type=jsonp&coord=bd09ll&qcip=' + ip,
+    //坐标系获取 一天200次 = ='http://api.map.baidu.com/highacciploc/v1?ak=mp7UQ7pMBx9SciF4Di0kFfnE&qterm=pc&callback_type=jsonp&coord=bd09ll&qcip=' + ip,
+    //需要优化，在找导一个ip时，对应记录下一个地址
     myPointGet: function (callback) {
         $.ajax({
             type: "get",
             async: false,
-            url: "http://api.map.baidu.com/highacciploc/v1?ak=mp7UQ7pMBx9SciF4Di0kFfnE&qterm=pc&callback_type=jsonp&coord=bd09ll&qcip="+this.myIp,
+            url: "http://api.map.baidu.com/highacciploc/v1?ak=mp7UQ7pMBx9SciF4Di0kFfnE&qterm=pc&callback_type=jsonp&coord=bd09ll&qcip=" + this.myIp,
             dataType: "jsonp",
-            success: function (data) {
+            success: function (d) {
                 // data demo:
                 //{"content":{"location":{"lat":24.******,"lng":118.******},"locid":"9***********************0","radius":30,"confidence":1.0},"result":{"error":161,"loc_time":"2017-02-28 17:16:08"}}
-                var inaccuratePoint = data.content.location;//是不够准确的数据
-                //处理操作
-                BMap.Convertor.translate(inaccuratePoint, 0, function (point) {
-                    var pointCz = { lng: point.lng - inaccuratePoint.lng, lat: point.lat - inaccuratePoint.lat };
-                    var x = inaccuratePoint.lng - myAction.oPointOffset.lng - pointCz.lng,
-                        y = inaccuratePoint.lat - myAction.oPointOffset.lat - pointCz.lat;
-                    myAction.myPoint = {"lat":y,"lng":x};
-                    callback();
-                });
-                //callback();
+                if (d.content == undefined) {
+                    myAction.myPoint = data.myPosition;
+                } else {
+                    var inaccuratePoint = d.content.location;//是不够准确的数据
+                    //处理操作
+                    BMap.Convertor.translate(inaccuratePoint, 0, function (point) {
+                        var pointCz = { lng: point.lng - inaccuratePoint.lng, lat: point.lat - inaccuratePoint.lat };
+                        var x = inaccuratePoint.lng - myAction.oPointOffset.lng - pointCz.lng,
+                            y = inaccuratePoint.lat - myAction.oPointOffset.lat - pointCz.lat;
+                        myAction.myPoint = { "lat": y, "lng": x };
+                    });
+                }
+                callback();
             },
             error: function () {
                 alert("waiting");
             }
         });
     },
-    //显示我的位置
+    //优化本地的point
+    myPointGetAtJson: function (callback) {
+        $.ajax({
+            type: "GET",
+            url: "dataJson/IpToPoint.json",
+            data: {},
+            async: false,
+            dataType: "json",
+            success: callback,
+            error: function (e) { alert("未响应。", -1); }
+        });
+    },
+
+
+    //显示我的位置 控制
     //ajax 内部用this是window。而不是当前对象
-    myPositionShow:function(){
-        this.myIpGet(function() {
-            myAction.myPointGet(function () {
-                
-                myAction.myPositionPoint = new esri.geometry.Point(parseFloat(myAction.myPoint.lng), parseFloat(myAction.myPoint.lat), myAction.spatialReference);
-                if (myAction.myPositionLayer==null) {
-                    myAction.mypositionAGraphic = new esri.Graphic(myAction.myPositionPoint, myAction.pointSymbol);//面，以点汇面
-                    myAction.myPositionLayer = new esri.layers.GraphicsLayer({ id: "myPositionMap" });//layer，在图层中添加面
-
-                    myAction.myPositionLayer.add(myAction.mypositionAGraphic);
-
-                    ssmap.map.addLayer(myAction.myPositionLayer);
-                } else {
-                    myAction.mypositionAGraphic.setGeometry(myAction.myPositionPoint);
+    myPositionShow: function () {
+        this.myIpGet(function () {//ip获取
+            myAction.myPointGetAtJson(function (d) {//json文件内找寻匹配point
+                for (var i = 0; i < d.length;i++){
+                    if (d[i].IP==myAction.myIp) {
+                        myAction.myPoint = d[i].Point;
+                        myAction.positionShowAction();
+                        return;
+                    }
                 }
-                //图层显示级别
-                myAction.Center(myAction.myPositionPoint);
-                myAction.myPositionLayer.show();
-                dojo.connect(myAction.myPositionLayer, "onClick", myAction, "myPositionClickHandler");//用myAction而不是this，这里this为window，而不是当前的对象
+                if (myAction.myPoint == null) {//本地json未找到数据
+                    myAction.myPointGet(function () {//找不到 请求
+                        myAction.positionShowAction();//显示
+                        //操作json 将新的ip point数据写入json
+                        myAction.updateIpToPointJson();
+                    });
+                }
             });
-        });      
+        });
+    },
+    //显示我的位置的
+    positionShowAction:function(){
+        this.myPositionPoint = new esri.geometry.Point(parseFloat(this.myPoint.lng), parseFloat(this.myPoint.lat), this.spatialReference);
+        if (this.myPositionLayer == null) {
+            this.mypositionAGraphic = new esri.Graphic(this.myPositionPoint, this.pointSymbol);//面，以点汇面
+            this.myPositionLayer = new esri.layers.GraphicsLayer({ id: "myPositionMap" });//layer，在图层中添加面
+
+            this.myPositionLayer.add(this.mypositionAGraphic);
+
+            ssmap.map.addLayer(this.myPositionLayer);
+            dojo.connect(this.myPositionLayer, "onClick", this, "myPositionClickHandler");
+        } else {
+            this.mypositionAGraphic.setGeometry(this.myPositionPoint);
+        }
+        //图层显示级别
+        this.Center(this.myPositionPoint);
+        this.myPositionLayer.show();
+    },
+    //更新json文件，后台处理，这里不做
+    updateIpToPointJson:function(){
+
     },
     //隐藏我的位置
     myPositionHide: function () {
         this.myPositionLayer.hide();
     },
     //我的位置点击事件
-    myPositionClickHandler:function(){
+    myPositionClickHandler: function () {
         alert(this.myIp);
     },
 }

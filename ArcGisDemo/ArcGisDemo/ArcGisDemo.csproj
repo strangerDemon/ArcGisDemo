@@ -58,11 +58,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\ArcGisDemo.dll.config" />
+    <Content Include="dataJson\IpToPoint.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +85,7 @@
     <Content Include="js\map.js" />
     <Content Include="js\myAction.js" />
     <Content Include="js\onclick.js" />
+    <Content Include="lib\baiduMap\convertor.js" />
     <Content Include="lib\esri\3.14\esri.css" />
     <Content Include="lib\esri\3.14\init-min.js" />
     <Content Include="lib\esri\3.14\tundra.css" />

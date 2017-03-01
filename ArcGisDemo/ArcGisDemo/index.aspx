@@ -27,6 +27,7 @@
     <%-- baidu --%>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mp7UQ7pMBx9SciF4Di0kFfnE"></script>
     <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+   <%-- <script src="lib/baiduMap/convertor.js"></script>--%>
     <title>arcgis demo</title>
     <style>
        
