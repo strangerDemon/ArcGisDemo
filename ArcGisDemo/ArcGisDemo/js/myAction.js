@@ -3,14 +3,24 @@
  */
 myAction = {
     //对象内的全局变量
-    fillSymbol: null,
+    fillSymbol: null,//样式，填充样式
+
+    pointSymbol:null,//点样式
 
     spatialReference: null,//标识，固定
+
 
     //初始化
     init: function () {
         this.fillSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255, 160, 122]), 2), new dojo.Color([255, 255, 255, 0.5]));
         this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
+        this.pointSymbol = new esri.symbol.PictureMarkerSymbol('img/myPosition.png', 16, 16);
+    },
+    //居中位置
+    Center:function(position){
+        var level = ssmap.map.getLevel();
+        level = level < 15 ? 15 : level;
+        ssmap.map.centerAndZoom(position, level);//居中点和级别
     },
     /**
      * 静态的根据data.js 内数据绘图
@@ -83,7 +93,7 @@ myAction = {
         //判断鼠标点击的按钮
         var btnNum = evt.button;
         if (btnNum == 2) {//鼠标右键 结束
-            this.dynamicDrawEnd();
+            dojo.disconnect(this.dynamicMapClick);//取消绑定
         } else if (btnNum == 0) {//鼠标左键 绘图
             this.dynamicAreaDraw(evt.mapPoint);
         } else if (btnNum == 1) {//中建 回退
@@ -136,7 +146,92 @@ myAction = {
             this.dynamicAGraphic.setGeometry(this.dynamicPloygon);
         }
     },
+    /**
+     * 根据ip来获取未知定位
+    */
+    myIp: null,//我的ip
+    myPoint: null,//我的未知
+    myPositionLayer: null,//我的未知
+    myPositionPoint:null,//坐标点
+    mypositionAGraphic: null,
+    oPointOffset: { lng: 0.00000, lat: 0.00015 },//偏移量，别问我为什么是这个，是有人试出来的
+    //ip获取地址 http://ip.chinaz.com/getip.aspx
+    myIpGet: function (callback) {
+        $.ajax({
+            type: "get",
+            async: false,
+            url: "http://ip.chinaz.com/getip.aspx",
+            dataType: "jsonp",
+            success: function (data) {
+                // data demo:
+                // {ip:'183.250.1**.1**',address:'福建省 移动'}
+                // 内部this 为window，不为myAction
+                myAction.myIp = data.ip;
+                callback();
+            },
+            error: function () {
+                alert("waiting");
+            }
+        });
+    },
+    //坐标系获取 'http://api.map.baidu.com/highacciploc/v1?ak=mp7UQ7pMBx9SciF4Di0kFfnE&qterm=pc&callback_type=jsonp&coord=bd09ll&qcip=' + ip,
+    myPointGet: function (callback) {
+        $.ajax({
+            type: "get",
+            async: false,
+            url: "http://api.map.baidu.com/highacciploc/v1?ak=mp7UQ7pMBx9SciF4Di0kFfnE&qterm=pc&callback_type=jsonp&coord=bd09ll&qcip="+this.myIp,
+            dataType: "jsonp",
+            success: function (data) {
+                // data demo:
+                //{"content":{"location":{"lat":24.******,"lng":118.******},"locid":"9***********************0","radius":30,"confidence":1.0},"result":{"error":161,"loc_time":"2017-02-28 17:16:08"}}
+                var inaccuratePoint = data.content.location;//是不够准确的数据
+                //处理操作
+                BMap.Convertor.translate(inaccuratePoint, 0, function (point) {
+                    var pointCz = { lng: point.lng - inaccuratePoint.lng, lat: point.lat - inaccuratePoint.lat };
+                    var x = inaccuratePoint.lng - myAction.oPointOffset.lng - pointCz.lng,
+                        y = inaccuratePoint.lat - myAction.oPointOffset.lat - pointCz.lat;
+                    myAction.myPoint = {"lat":y,"lng":x};
+                    callback();
+                });
+                //callback();
+            },
+            error: function () {
+                alert("waiting");
+            }
+        });
+    },
+    //显示我的位置
+    //ajax 内部用this是window。而不是当前对象
+    myPositionShow:function(){
+        this.myIpGet(function() {
+            myAction.myPointGet(function () {
+                
+                myAction.myPositionPoint = new esri.geometry.Point(parseFloat(myAction.myPoint.lng), parseFloat(myAction.myPoint.lat), myAction.spatialReference);
+                if (myAction.myPositionLayer==null) {
+                    myAction.mypositionAGraphic = new esri.Graphic(myAction.myPositionPoint, myAction.pointSymbol);//面，以点汇面
+                    myAction.myPositionLayer = new esri.layers.GraphicsLayer({ id: "myPositionMap" });//layer，在图层中添加面
 
+                    myAction.myPositionLayer.add(myAction.mypositionAGraphic);
+
+                    ssmap.map.addLayer(myAction.myPositionLayer);
+                } else {
+                    myAction.mypositionAGraphic.setGeometry(myAction.myPositionPoint);
+                }
+                //图层显示级别
+                myAction.Center(myAction.myPositionPoint);
+                myAction.myPositionLayer.show();
+                dojo.connect(myAction.myPositionLayer, "onClick", myAction, "myPositionClickHandler");//用myAction而不是this，这里this为window，而不是当前的对象
+            });
+        });      
+    },
+    //隐藏我的位置
+    myPositionHide: function () {
+        this.myPositionLayer.hide();
+    },
+    //我的位置点击事件
+    myPositionClickHandler:function(){
+        alert(this.myIp);
+    },
 }
 
 

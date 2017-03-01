@@ -57,6 +57,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\ArcGisDemo.dll.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -65,10 +66,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\ArcGisDemo.dll" />
+    <Content Include="bin\ArcGisDemo.pdb" />
     <Content Include="css\label.css" />
     <Content Include="css\map.css" />
     <Content Include="eg.png" />
+    <Content Include="eg1.gif" />
     <Content Include="eg2.png" />
+    <Content Include="img\myPosition.png" />
     <Content Include="img\mapType.png" />
     <Content Include="img\staticMapDraw.png" />
     <Content Include="img\dynamicMapDraw.png" />

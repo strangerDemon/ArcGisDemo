@@ -21,8 +21,13 @@ $(document).ready(function () {
         }
     });
     //图片切换
-    var showCount = 0;
+    var mayTypeCount = 0;
     $("#toolbar_mapType").click(function () {
-        ssmap.showTdtLayer((showCount++)%3);
+        ssmap.showTdtLayer((mayTypeCount++) % 3);
+    });
+    //显示我的未知
+    var myPositionCount = 0;
+    $("#toolbar_showMyPosition").click(function () {
+        myPositionCount++ % 2 == 0 ? myAction.myPositionShow() : myAction.myPositionHide();
     });
 })

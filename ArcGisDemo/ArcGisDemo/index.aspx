@@ -23,7 +23,10 @@
     <script src="js/onclick.js"></script>
     <%-- css --%>
     <link rel="stylesheet" type="text/css" href="css/map.css" />
-     <link rel="stylesheet" type="text/css" href="css/label.css" />
+    <link rel="stylesheet" type="text/css" href="css/label.css" />
+    <%-- baidu --%>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mp7UQ7pMBx9SciF4Di0kFfnE"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
     <title>arcgis demo</title>
     <style>
        
@@ -43,6 +46,10 @@
         <div class="toolbarItem" id="toolbar_dynamicMapDraw">
             <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/dynamicMapDraw.png') no-repeat scroll 0 0 / 16px"></span>
             <span class="name">绘图</span>
+        </div>
+        <div class="toolbarItem" id="toolbar_showMyPosition">
+            <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/myPosition.png') no-repeat scroll 0 0 / 16px"></span>
+            <span class="name">我的位置</span>
         </div>
     </div>
 </body>
