@@ -9,7 +9,6 @@ myAction = {
 
     spatialReference: null,//标识，固定
 
-
     //初始化
     init: function () {
         this.fillSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255, 160, 122]), 2), new dojo.Color([255, 255, 255, 0.5]));
@@ -78,6 +77,9 @@ myAction = {
     dynamicAGraphic: null,
     dynamicGraphicsLayer: null,
     dynamicMapClick: null,//dojo绑定的事件
+    dynamicMapMouseOn: null,//dojo绑定的事件
+    dynamicMapText: null,
+    textSymbol: null,//面积提醒样式
     dynamicAreaDrawInit: function () {
         if (this.dynamicMapClick != null) {//已绑定，再次点击时取消绑定，点清除，图层隐藏
             this.dynamicDrawEnd();
@@ -93,7 +95,7 @@ myAction = {
         //判断鼠标点击的按钮
         var btnNum = evt.button;
         if (btnNum == 2) {//鼠标右键 结束
-            dojo.disconnect(this.dynamicMapClick);//取消绑定
+            dojo.disconnect(this.dynamicMapClick);//取消绑定            
         } else if (btnNum == 0) {//鼠标左键 绘图
             this.dynamicAreaDraw(evt.mapPoint);
         } else if (btnNum == 1) {//中建 回退
@@ -104,11 +106,15 @@ myAction = {
         }
     },
     dynamicDrawEnd: function () {
+        //清除点，隐藏layer
         this.dynamicPloygon = null;
         this.dynamicAGraphic.setGeometry(this.dynamicPloygon);
         dojo.disconnect(this.dynamicMapClick);//取消绑定
         this.dynamicGraphicsLayer.hide();
         this.dynamicMapClick = null;
+        //清除面积提醒
+        this.dynamicMapText.setSymbol(null);
+        this.dynamicMapText.setGeometry(null)
     },
     //绘图
     dynamicAreaDraw: function (pt) {
@@ -124,6 +130,8 @@ myAction = {
                 this.dynamicGraphicsLayer.add(this.dynamicAGraphic);
 
                 ssmap.map.addLayer(this.dynamicGraphicsLayer);
+
+                this.dynamicMapMouseOn = dojo.connect(this.dynamicGraphicsLayer, "onMouseOver", this, "showArea");
             }
         } else {//点击图中加点
             if (this.dynamicPloygon.rings[0] == undefined || this.dynamicPloygon.rings[0].length < 1) {//后退后再次重新绘点
@@ -145,6 +153,24 @@ myAction = {
             this.dynamicPloygon.removePoint(0, this.dynamicPloygon.rings[0].length - 2);
             this.dynamicAGraphic.setGeometry(this.dynamicPloygon);
         }
+    },
+    //鼠标在上时显示
+    showArea: function (evt) {
+        evt = evt ? evt : (window.event ? window.event : null);
+        var Area = esri.geometry.geodesicAreas([this.dynamicPloygon], esri.Units.SQUARE_METERS);
+        var showWord = Area[0] < 0 ? -Area[0] : Area[0];
+        showWord = showWord < 1000000 ? showWord < 10000 ? showWord.toFixed(2) + "平方米" : (showWord / 10000).toFixed(2) + "平方公顷" : (showWord / 1000000).toFixed(2) + "平方公里";
+        this.textSymbol = new esri.symbol.TextSymbol(showWord).setColor(new dojo.Color([0, 0, 0])).setAlign(esri.symbol.Font.ALIGN_START)
+                  .setOffset(6, 6).setFont(new esri.symbol.Font("10pt"));
+        if (this.dynamicMapText == null) {
+            this.dynamicMapText = new esri.Graphic(evt.mapPoint, this.textSymbol);
+
+            this.dynamicGraphicsLayer.add(this.dynamicMapText);
+        } else {
+            this.dynamicMapText.setSymbol(this.textSymbol);
+            this.dynamicMapText.setGeometry(evt.mapPoint)
+        }
+        //alert("面积：" + showWord);
     },
     /**
      * 根据ip来获取未知定位
@@ -223,8 +249,8 @@ myAction = {
     myPositionShow: function () {
         this.myIpGet(function () {//ip获取
             myAction.myPointGetAtJson(function (d) {//json文件内找寻匹配point
-                for (var i = 0; i < d.length;i++){
-                    if (d[i].IP==myAction.myIp) {
+                for (var i = 0; i < d.length; i++) {
+                    if (d[i].IP == myAction.myIp) {
                         myAction.myPoint = d[i].Point;
                         myAction.positionShowAction();
                         return;
@@ -241,7 +267,7 @@ myAction = {
         });
     },
     //显示我的位置的
-    positionShowAction:function(){
+    positionShowAction: function () {
         this.myPositionPoint = new esri.geometry.Point(parseFloat(this.myPoint.lng), parseFloat(this.myPoint.lat), this.spatialReference);
         if (this.myPositionLayer == null) {
             this.mypositionAGraphic = new esri.Graphic(this.myPositionPoint, this.pointSymbol);//面，以点汇面
@@ -259,7 +285,7 @@ myAction = {
         this.myPositionLayer.show();
     },
     //更新json文件，后台处理，这里不做
-    updateIpToPointJson:function(){
+    updateIpToPointJson: function () {
 
     },
     //隐藏我的位置
