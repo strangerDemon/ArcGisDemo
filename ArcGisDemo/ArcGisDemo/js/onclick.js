@@ -30,4 +30,9 @@ $(document).ready(function () {
     $("#toolbar_showMyPosition").click(function () {
         myPositionCount++ % 2 == 0 ? myAction.myPositionShow() : myAction.myPositionHide();
     });
+    //绘线
+    var lineCount = 0;
+    $("#toolbar_lineDraw").click(function () {
+        myAction.lineDrawInit();
+    })
 })

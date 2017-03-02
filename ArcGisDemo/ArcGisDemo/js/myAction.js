@@ -3,7 +3,9 @@
  */
 myAction = {
     //对象内的全局变量
-    fillSymbol: null,//样式，填充样式
+    areaSymbol: null,//样式，填充样式 面积
+
+    lineSymbol:null,//点样式
 
     pointSymbol: null,//点样式
 
@@ -11,7 +13,9 @@ myAction = {
 
     //初始化
     init: function () {
-        this.fillSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255, 160, 122]), 2), new dojo.Color([255, 255, 255, 0.5]));
+        this.areaSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255, 160, 122]), 2), new dojo.Color([255, 255, 255, 0.5]));
+        this.lineSymbol = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255, 160, 122]), 2);
+
         this.spatialReference = new esri.SpatialReference({ wkid: 4326 });
         this.pointSymbol = new esri.symbol.PictureMarkerSymbol('img/myPosition.png', 16, 16);
     },
@@ -37,7 +41,7 @@ myAction = {
 
             this.staticGeoPloygon.addRing([data.initPoint[0], data.initPoint[1], data.initPoint[2], data.initPoint[3], data.initPoint[0]]);//添加点数据
 
-            this.staticAGraphic = new esri.Graphic(this.staticGeoPloygon, this.fillSymbol);//面，以点汇面
+            this.staticAGraphic = new esri.Graphic(this.staticGeoPloygon, this.areaSymbol);//面，以点汇面
 
             this.staticGraphicsLayer = new esri.layers.GraphicsLayer({ id: "DciMeature" });//layer，在图层中添加面
 
@@ -87,18 +91,19 @@ myAction = {
             this.dynamicMapClick = dojo.connect(ssmap.map, "onMouseDown", this, "dynamicMouse");//dojo.connect为对象注册事件       
             this.dynamicGraphicsLayer.show();
         } else {//初始化
-            this.dynamicMapClick = dojo.connect(ssmap.map, "onMouseDown", this, "dynamicMouse");//dojo.connect为对象注册事件
+            this.dynamicMapClick = dojo.connect(ssmap.map, "onMouseDown", this, "dynamicMouse");//dojo.connect为对象注册事件          
         }
+        this.lineDrawEnd();//清除画线的事件
     },
     dynamicMouse: function (evt) {
         evt = evt ? evt : (window.event ? window.event : null);
         //判断鼠标点击的按钮
         var btnNum = evt.button;
-        if (btnNum == 2) {//鼠标右键 结束
+        if (btnNum == 1) {//鼠标中间键 结束
             dojo.disconnect(this.dynamicMapClick);//取消绑定            
         } else if (btnNum == 0) {//鼠标左键 绘图
             this.dynamicAreaDraw(evt.mapPoint);
-        } else if (btnNum == 1) {//中建 回退
+        } else if (btnNum == 2) {//右建 回退
             this.dynamicAreaReturn();
         } else {
             alert("您点击了" + btnNum + "号键，我不能确定它的名称。");
@@ -123,7 +128,7 @@ myAction = {
             this.dynamicPloygon.addRing([[pt.x, pt.y], [pt.x, pt.y]]);//添加点数据
 
             if (this.dynamicGraphicsLayer == null) {
-                this.dynamicAGraphic = new esri.Graphic(this.dynamicPloygon, this.fillSymbol);//面，以点汇面
+                this.dynamicAGraphic = new esri.Graphic(this.dynamicPloygon, this.areaSymbol);//面，以点汇面
 
                 this.dynamicGraphicsLayer = new esri.layers.GraphicsLayer({ id: "dynamicMap" });//layer，在图层中添加面
 
@@ -295,6 +300,87 @@ myAction = {
     //我的位置点击事件
     myPositionClickHandler: function () {
         alert(this.myIp);
+    },
+    //绘线
+    linePolygon: null,
+    lineAGraphic: null,
+    lineLayer: null,
+    lineClick:null,
+    lineDrawInit: function () {
+        if (this.lineClick != null) {//一次画线结束
+            this.lineDrawEnd();
+        }else if (this.lineLayer != null) {//第二次及以后画线
+            this.lineClick = dojo.connect(ssmap.map, "onMouseDown", this, "lineMouse");
+            this.lineLayer.show();
+        } else {//第一次画线
+            this.lineClick = dojo.connect(ssmap.map, "onMouseDown", this, "lineMouse");
+        }
+        this.dynamicDrawEnd();//清除画图的事件
+    },
+    lineMouse: function (evt) {
+        evt = evt ? evt : (window.event ? window.event : null);
+        //判断鼠标点击的按钮
+        var btnNum = evt.button;
+        if (btnNum == 1) {//鼠标中间键 结束
+            dojo.disconnect(this.lineClick);//取消绑定            
+        } else if (btnNum == 0) {//鼠标左键 绘图
+            this.lineDraw(evt.mapPoint);
+        } else if (btnNum == 2) {//鼠标右键 回退
+            this.lineDrawReturn();
+        } else {
+            alert("您点击了无效按键。");
+            return;
+        }
+    },
+    //画线
+    lineDraw: function (pt) {
+        if (this.linePolygon == null) {//初始化 1、已有图层时 2、未有图层
+            this.linePolygon = new esri.geometry.Polygon(this.spatialReference);
+            this.linePolygon.addRing([[pt.x, pt.y]]);//添加点数据
+
+            if (this.lineLayer == null) {
+                this.lineAGraphic = new esri.Graphic(this.linePolygon, this.lineSymbol);//面，以点汇面
+
+                this.lineLayer = new esri.layers.GraphicsLayer({ id: "lineLayer" });//layer，在图层中添加面
+
+                this.lineLayer.add(this.lineAGraphic);
+
+                ssmap.map.addLayer(this.lineLayer);
+
+            }
+        } else {//点击图中加点
+            if (this.linePolygon.rings[0] == undefined || this.linePolygon.rings[0].length < 1) {//后退后再次重新绘点
+                this.linePolygon.addRing([[pt.x, pt.y]]);//添加点数据
+            } else {
+                //绘图和绘线本质上是一样的
+                //绘图为起始终止断点为一个，每次在倒数第二的未知加新点
+                //绘线为每次在最后未知加新点
+                this.linePolygon.insertPoint(0, this.linePolygon.rings[0].length, pt);
+            }
+            this.lineAGraphic.setGeometry(this.linePolygon);//this._geoPloygon为一个array point数组，根据point数据绘制多边形
+        }
+    },
+    //一次画线结束
+    lineDrawEnd: function () {
+        //点清空
+        this.linePolygon = null;
+        this.lineAGraphic.setGeometry(this.linePolygon);
+        this.lineLayer.hide();
+        //解除dojo绑定
+        dojo.disconnect(this.lineClick);
+        this.lineClick = null;
+    },
+    //点回退
+    lineDrawReturn: function () {
+        if (this.linePolygon.rings[0] == undefined || this.linePolygon.rings[0].length < 1) {//已无点时
+            alert("已无回退点！");
+        } else if (this.linePolygon.rings[0].length <= 2) {//最后剩起始终止2个点时
+            this.linePolygon.removeRing(0);
+            this.lineAGraphic.setGeometry(this.linePolygon);
+        } else {//回退
+            this.linePolygon.removePoint(0, this.linePolygon.rings[0].length - 1);
+            this.lineAGraphic.setGeometry(this.linePolygon);
+        }
     },
 }
 

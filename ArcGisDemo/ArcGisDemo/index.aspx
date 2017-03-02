@@ -48,6 +48,10 @@
             <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/dynamicMapDraw.png') no-repeat scroll 0 0 / 16px"></span>
             <span class="name">绘图</span>
         </div>
+         <div class="toolbarItem" id="toolbar_lineDraw">
+            <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/lineDraw.png') no-repeat scroll 0 0 / 16px"></span>
+            <span class="name">绘线</span>
+        </div>
         <div class="toolbarItem" id="toolbar_showMyPosition">
             <span class="icon" style="background: rgba(0, 0, 0, 0) url('img/myPosition.png') no-repeat scroll 0 0 / 16px"></span>
             <span class="name">我的位置</span>
